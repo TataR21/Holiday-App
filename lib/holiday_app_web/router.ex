@@ -21,8 +21,12 @@ defmodule HolidayAppWeb.Router do
 
   scope "/", HolidayAppWeb do
     pipe_through [:browser, :protected]
-
-    get "/", PageController, :index
+    get "/", HolidayController, :index
+    get "/page/new", HolidayController, :new
+    post "/page", HolidayController, :create
+    get "/page/:id/edit", HolidayController, :edit
+    delete "/page/:id/delete", HolidayController, :delete
+    put "/page/:id", HolidayController, :update
   end
   scope "/" do
     pipe_through :browser
