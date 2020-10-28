@@ -1,0 +1,10 @@
+<%= form_for @changeset, Routes.holiday_path(@conn, :update, @holiday_row), fn f -> %>
+<%= date_input f, :date_start, class: "datepicker" %>
+<%= date_input f, :date_end, class: "datepicker" %>
+ <%= text_input f, :reason, placeholder: "Powód urlopu", class: "form-control" %>
+<%= submit "Zapisz przedział", class: "btn btn-primary" %>
+<%= error_tag f, :reason %>
+<%= error_tag f, :days %>
+<%= error_tag f, :date_start %>
+<%= error_tag f, :date_end %>
+<% end %>

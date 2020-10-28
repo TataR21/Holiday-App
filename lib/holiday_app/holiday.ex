@@ -14,7 +14,7 @@ defmodule HolidayAppWeb.Holiday do
   end
 
   @doc false
-  def changeset(holiday, attrs) do
+  def changeset(holiday, attrs \\ %{}) do
     holiday
     |> cast(attrs, [:id_user, :date_start, :date_end, :days, :reason])
     |> validate_required([:id_user, :date_start, :date_end, :days, :reason])
