@@ -2,6 +2,7 @@ defmodule HolidayAppWeb.HolidayController do
   use HolidayAppWeb, :controller
   alias HolidayApp.Repo
   alias HolidayAppWeb.Holiday
+
   def index(conn, _params) do
     holiday_table = Repo.all(Holiday)
     render(conn, "index.html", holiday_table: holiday_table)
@@ -23,6 +24,13 @@ defmodule HolidayAppWeb.HolidayController do
         |> redirect(to: Routes.holiday_path(conn, :index))
       {:error, changeset} -> render conn, "new.html", changeset: changeset
     end
+  end
+
+  def delete(conn, %{"id" => row_id}) do
+    Repo.get!(Holiday, row_id) |> Repo.delete!()
+    conn
+    |> put_flash(:info, "Przedział usunięty")
+    |> redirect(to: Routes.holiday_path(conn, :index))
   end
 
   def list_of_days(date_start, date_end) do
