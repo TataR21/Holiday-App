@@ -28,7 +28,8 @@ config :phoenix, :json_library, Jason
 
 config :holiday_app, :pow,
   user: HolidayApp.Users.User,
-  repo: HolidayApp.Repo
+  repo: HolidayApp.Repo,
+  web_module: HolidayAppWeb
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

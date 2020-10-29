@@ -1,27 +1,37 @@
-<section class="phx-hero">
+<div class="index-container">
+  <h2>Lista dat urlopowych</h2>
 
-</section>
+  <%= for row <- @holiday_table do %>
+  <div class="input-group index-button-group">
+    <input type="text" class="form-control" value="<%=row.date_start%>"  aria-describedby="button-addon4" readonly>
+    <input type="text" class="form-control" value="<%=row.date_end%>"  aria-describedby="button-addon4" readonly>
+    <div class="input-group-append" id="button<%=row.id%>">
+      <%= link "Edytuj", to: Routes.holiday_path(@conn, :edit, row), class: "btn btn-outline-secondary"   %>
+      <%= link "Usuń", to: Routes.holiday_path(@conn, :delete, row) , method: :delete, class: "btn btn-outline-secondary"  %>
+      <button class="btn btn-outline-secondary"  type="button" data-toggle="collapse" data-target="#collapsereason<%=row.id%>" aria-expanded="false" aria-controls="collapseExample">
+      Powód urlopu
+      </button>
+      <button class="btn btn-outline-secondary"  type="button" data-toggle="collapse" data-target="#collapse<%=row.id%>" aria-expanded="false" aria-controls="collapseExample">
+      Dni przedziału
+      </button>
+    </div>
+  </div>
+      <div class="collapse" id="collapsereason<%=row.id%>">
+      <div class="card card-body">
+       <%=row.reason%>
+      </div>
+    </div>
+    <div class="collapse" id="collapse<%=row.id%>">
+      <div class="card card-body">
+       <%= for item <- row.days do %>
+        <p><%= item %><p>
+      <% end %>
+      </div>
+    </div>
+  <%end %>
 
-<section class="row">
-  <article class="column">
-        <%= for row <- @holiday_table do %>
-            <li> <%= row.date_start %>, <%= row.date_end %>, <%= row.reason %>
-            <div class = "right">
-<%= link "Edit", to: Routes.holiday_path(@conn, :edit, row)  %>
-<%= link "Delete", to: Routes.holiday_path(@conn, :delete, row) , method: :delete  %>
+  <h5>Liczba dni pozostałych do wykorzystania: <span class="badge badge-secondary"><%= @days_to_used %></span> </h5>
+  <div class="index-btn-add-new-date">
+    <%= link "Dodaj nową datę urlopu", to: Routes.holiday_path(@conn, :new), class: "btn btn-lg btn-primary btn-block"  %>
+  </div>
 </div>
-    </li>
-            <%end %>
-            <div>
-            <%= link "Dodaj nową datę urlopu", to: Routes.holiday_path(@conn, :new)  %>
-            <div>
-            <%= @days_to_used %>
-            <%= if Pow.Plug.current_user(@conn) do %>
-  <span><%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %></span>
-  <%= Pow.Plug.current_user(@conn).id %>
-<% else %>
-  <span><%= link "Register", to: Routes.pow_registration_path(@conn, :new) %></span>
-  <span><%= link "Sign in", to: Routes.pow_session_path(@conn, :new) %></span>
-<% end %>
-  </article>
-</section>
