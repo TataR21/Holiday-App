@@ -2,12 +2,11 @@ defmodule HolidayAppWeb.HolidayController do
   use HolidayAppWeb, :controller
   alias HolidayApp.Repo
   alias HolidayAppWeb.Holiday
-  import Ecto.Query, only: [from: 2]
+  import HolidayApp.HolidayModule
 
   def index(conn, _params) do
     holiday_table = get_data_for_logged_in_user(conn)
-    all_days = Enum.map(holiday_table, fn x -> x.days end)
-    list_days = Enum.flat_map(all_days, fn x -> x end )
+    list_days = return_list_of_days(holiday_table)
     days_to_used = 20 - length(list_days)
     render(conn, "index.html", holiday_table: holiday_table, days_to_used: days_to_used)
   end
@@ -18,8 +17,7 @@ defmodule HolidayAppWeb.HolidayController do
   end
 
   def create(conn, %{"holiday" => new_row}) do
-    map_add_days = Map.put_new(new_row, "days", list_of_days(new_row["date_start"],new_row["date_end"]))
-    map = Map.put_new(map_add_days, "id_user", Pow.Plug.current_user(conn).id)
+    map = put_days_list_and_id_user(conn, new_row)
     changeset = Holiday.changeset(%Holiday{}, map)
     data = get_data_for_logged_in_user(conn)
     list_days = return_list_of_days(data)
@@ -50,8 +48,7 @@ defmodule HolidayAppWeb.HolidayController do
   def update(conn, %{"id" => row_id, "holiday" => new_row}) do
     {id,_tail} = Integer.parse(row_id)
     list_days = get_repo_for_update_return_list_of_days(id, conn)
-    map = Map.put_new(new_row, "days", list_of_days(new_row["date_start"],new_row["date_end"]))
-    map = Map.put_new(map, "id_user", Pow.Plug.current_user(conn).id)
+    map = put_days_list_and_id_user(conn, new_row)
     old_row = Repo.get(Holiday, row_id)
     changeset = Holiday.changeset(old_row, map)
     changeset = check_days_overlap(map, list_days, changeset)
@@ -65,6 +62,7 @@ defmodule HolidayAppWeb.HolidayController do
     end
 
   end
+  @moduledoc """
   def list_of_days(date_start, date_end) do
     if date_start !== "" && date_end !== "" do
       start_date = Date.from_iso8601!(date_start)
@@ -113,4 +111,9 @@ defmodule HolidayAppWeb.HolidayController do
    Repo.all(query)
   end
 
+  def put_days_list_and_id_user(conn, new_row) do
+    map = Map.put_new(new_row, "days", list_of_days(new_row["date_start"],new_row["date_end"]))
+    Map.put_new(map, "id_user", Pow.Plug.current_user(conn).id)
+  end
+"""
 end
