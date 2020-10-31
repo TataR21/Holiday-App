@@ -23,8 +23,8 @@ defmodule HolidayAppWeb.HolidayController do
     changeset = Holiday.changeset(%Holiday{}, map)
     data = get_data_for_logged_in_user(conn)
     list_days = return_list_of_days(data)
-    changeset = check_days_overlap(map, list_days, changeset)
-    changeset = check_if_the_days_are_used(map, list_days, changeset)
+    changeset = check_days_overlap(map["days"], list_days, changeset)
+    changeset = check_if_the_days_are_used(map["days"], list_days, changeset)
     case Repo.insert(changeset) do
       {:ok, _tail} ->
         conn
@@ -53,8 +53,8 @@ defmodule HolidayAppWeb.HolidayController do
     map = put_days_list_and_id_user(conn, new_row)
     old_row = Repo.get(Holiday, row_id)
     changeset = Holiday.changeset(old_row, map)
-    changeset = check_days_overlap(map, list_days, changeset)
-    changeset = check_if_the_days_are_used(map, list_days, changeset)
+    changeset = check_days_overlap(map["days"], list_days, changeset)
+    changeset = check_if_the_days_are_used(map["days"], list_days, changeset)
     case Repo.update(changeset) do
       {:ok, _test_field} ->
         conn

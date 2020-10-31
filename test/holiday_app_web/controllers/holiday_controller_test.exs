@@ -8,7 +8,7 @@ defmodule HolidayAppWeb.HolidayControllerTest do
   @invalid_attrs_date %{id_user: 1, date_start: "2020-11-02", date_end: "2020-11-01", reason: "Urlopik"}
   @invalid_attrs_date_to_long %{id_user: 1, date_start: "2020-11-02", date_end: "2020-11-30", reason: "Urlopik"}
   @create_attrs_edit %{"id_user" => 1, "date_start" => "2020-11-02", "date_end" => "2020-11-05", "reason" => "Urlopik", "days" => ["2020-11-02", "2020-11-03", "2020-11-04", "2020-11-05"]}
-  @update_attrs %{id_user: 1, date_start: "2020-11-03", date_end: "2020-11-06", reason: "Urlopik", days: ["2020-11-03", "2020-11-04", "2020-11-05", "2020-11-06"]}
+  @update_attrs %{id_user: 1, date_start: "2020-11-03", date_end: "2020-11-06", reason: "Urlopik edytowany", days: ["2020-11-03", "2020-11-04", "2020-11-05", "2020-11-06"]}
 
 
   setup %{conn: conn} do
@@ -42,12 +42,15 @@ defmodule HolidayAppWeb.HolidayControllerTest do
 
      conn = get(authed_conn, Routes.holiday_path(authed_conn, :index))
 
-     assert html_response(conn, 200) =~ "Lista dat urlopowych:"
+     assert html_response(conn, 200) =~ "2020-11-02"
+     assert html_response(conn, 200) =~ "2020-11-05"
+     assert html_response(conn, 200) =~ "Urlopik"
      #assert get_flash(conn, :info) == "Dodano nowy przedział"
    end
    test "renders errors when date is empty", %{conn: conn} do
      conn = post(conn, Routes.holiday_path(conn, :create), holiday: @invalid_attrs_empty)
      assert html_response(conn, 200) =~ "Dodaj nowy urlop"
+
    end
 
    test "renders errors when date end is earlier than start", %{conn: conn} do
@@ -79,6 +82,9 @@ describe "update" do
 
     conn = get(authed_conn , Routes.holiday_path(authed_conn , :index))
     assert html_response(conn, 200) =~ "Lista dat urlopowych:"
+    assert html_response(conn, 200) =~ "2020-11-03"
+    assert html_response(conn, 200) =~ "2020-11-06"
+    assert html_response(conn, 200) =~ "Urlopik edytowany"
   end
   test "renders errors when date is empty", %{conn: conn, holiday: holiday} do
     conn = put(conn, Routes.holiday_path(conn, :update, holiday), holiday: @invalid_attrs_empty)

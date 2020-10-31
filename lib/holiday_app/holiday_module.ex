@@ -25,7 +25,7 @@ defmodule HolidayApp.HolidayModule do
   end
 
   def check_days_overlap(new_row, list_days, changeset) do
-    case Enum.any?(list_days, fn x -> x in new_row["days"] end) do
+    case Enum.any?(list_days, fn x -> x in new_row end) do
       true -> Ecto.Changeset.add_error(changeset, :date_start, "Przedziały nie mogą się nakładać!")
       false -> changeset
     end
@@ -33,7 +33,7 @@ defmodule HolidayApp.HolidayModule do
 
   def check_if_the_days_are_used(new_row, list_days, changeset) do
     days_used = length(list_days)
-    days_from_changeset = length(new_row["days"])
+    days_from_changeset = length(new_row)
     if days_used+days_from_changeset<=%Static_var{}.vacation_days do
       changeset
     else
