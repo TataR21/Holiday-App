@@ -29,8 +29,29 @@
 .alert:empty {
   display: none;
 }
-.invalid-feedback {
+.myinvalid-feedback {
   color: #a94442;
   display: block;
   margin: -1rem 0 2rem;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.index-button-group {
+  margin: 10px;
+}
+.index-container {
+  width: 65%;
+}
+
+.index-btn-add-new-date {
+  width: 50%;
+}
+
+.element-margin {
+  margin: 10px
 }

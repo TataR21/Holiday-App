@@ -2,6 +2,16 @@ defmodule HolidayApp.HolidayModule do
   alias HolidayApp.Repo
   alias HolidayAppWeb.Holiday
   import Ecto.Query, only: [from: 2]
+
+  @doc """
+    Take two arguments date_start and date_end and return list of days in range of date_start and date_end
+
+    ##Examples
+
+      iex>HolidayApp.HolidayModule.list_of_days("2020-10-10","2020-10-12")
+      ["2020-10-10", "2020-10-11", "2020-10-12"]
+
+  """
   def list_of_days(date_start, date_end) do
     if date_start !== "" && date_end !== "" do
       start_date = Date.from_iso8601!(date_start)

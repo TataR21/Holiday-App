@@ -3,10 +3,8 @@
     <%= date_input f, :date_end, class: "datepicker element-margin" %>
     <%= text_input f, :reason, placeholder: "Powód", class: "form-control element-margin" %>
     <%= submit "Zapisz przedział urlopowy", class: "btn btn-primary element-margin" %>
-    <div class="error-container">
         <%= error_tag f, :reason %>
         <%= error_tag f, :days %>
         <%= error_tag f, :date_start %>
         <%= error_tag f, :date_end %>
-    </div>
 <% end %>
