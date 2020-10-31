@@ -1,3 +1,4 @@
+<h2>Edytuj urlop</h2>
 <%= form_for @changeset, Routes.holiday_path(@conn, :update, @holiday_row), fn f -> %>
     <%= date_input f, :date_start, class: "datepicker element-margin" %>
     <%= date_input f, :date_end, class: "datepicker element-margin" %>

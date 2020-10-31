@@ -1,3 +1,3 @@
-defmodule HolidayAppWeb.PageViewTest do
+defmodule HolidayAppWeb.HolidayViewTest do
   use HolidayAppWeb.ConnCase, async: true
 end

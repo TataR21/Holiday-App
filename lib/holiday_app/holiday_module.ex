@@ -2,7 +2,8 @@ defmodule HolidayApp.HolidayModule do
   alias HolidayApp.Repo
   alias HolidayAppWeb.Holiday
   import Ecto.Query, only: [from: 2]
-
+  import HolidayApp.Static_var
+  alias HolidayApp.Static_var
   @doc """
     Take two arguments date_start and date_end and return list of days in range of date_start and date_end
 
@@ -11,7 +12,7 @@ defmodule HolidayApp.HolidayModule do
       iex>HolidayApp.HolidayModule.list_of_days("2020-10-10","2020-10-12")
       ["2020-10-10", "2020-10-11", "2020-10-12"]
 
-  """
+"""
   def list_of_days(date_start, date_end) do
     if date_start !== "" && date_end !== "" do
       start_date = Date.from_iso8601!(date_start)
@@ -33,7 +34,7 @@ defmodule HolidayApp.HolidayModule do
   def check_if_the_days_are_used(new_row, list_days, changeset) do
     days_used = length(list_days)
     days_from_changeset = length(new_row["days"])
-    if days_used+days_from_changeset<=20 do
+    if days_used+days_from_changeset<=%Static_var{}.vacation_days do
       changeset
     else
       Ecto.Changeset.add_error(changeset, :date_start, "Liczba dni urlopowych została wykorzystana.
