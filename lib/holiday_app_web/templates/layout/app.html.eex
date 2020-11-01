@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-      <h5 class="my-0 mr-md-auto font-weight-normal">Formularz zgłoszeń urlopowych</h5>
+        <a><%= link "Formularz zgłoszeń urlopowych", to: Routes.holiday_path(@conn, :index), class: "navbar-brand my-0 mr-md-auto font-weight-normal" %></a>
         <nav class="my-2 my-md-0 mr-md-3">
           <%= if Pow.Plug.current_user(@conn) do %>
             <span "navbar navbar-light bg-light" > Zalogowano jako: <%= Pow.Plug.current_user(@conn).email%>  </span>
@@ -25,7 +25,7 @@
         </nav>
     </div>
     <main role="main" class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-info index-container" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= @inner_content %>
     </main>

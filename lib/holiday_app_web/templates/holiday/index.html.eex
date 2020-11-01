@@ -1,7 +1,7 @@
 <div class="index-container">
   <h2>Lista dat urlopowych:</h2>
 <%= if Enum.empty?(@holiday_table) do %>
-  Nie dodano jeszcze żadnego urlopu. Dodaj nowy przedział!
+  <h5>Nie dodano jeszcze żadnego urlopu. Dodaj nowy przedział!</h5>
 <% end %>
   <%= for row <- @holiday_table do %>
   <div class="input-group index-button-group">
@@ -32,7 +32,7 @@
     </div>
   <%end %>
 
-  <h5 class="element-margin">Liczba dni pozostałych do wykorzystania: <span class="badge badge-secondary"><%= @days_to_used %></span> </h5>
+  <h5 >Liczba dni pozostałych do wykorzystania: <span class="badge badge-secondary"><%= @days_to_used %></span> </h5>
   <div class="index-btn-add-new-date">
     <%= link "Dodaj nową datę urlopu", to: Routes.holiday_path(@conn, :new), class: "btn btn-lg btn-primary btn-block"  %>
   </div>
