@@ -34,17 +34,47 @@ defmodule HolidayAppWeb.HolidayController do
     end
   end
 
+  #def delete(conn, %{"id" => row_id}) do
+   # Repo.get!(Holiday, row_id) |> Repo.delete!()
+  #  conn
+  #  |> put_flash(:info, "Przedział usunięty")
+  #  |> redirect(to: Routes.holiday_path(conn, :index))
+  #end
+
   def delete(conn, %{"id" => row_id}) do
-    Repo.get!(Holiday, row_id) |> Repo.delete!()
-    conn
-    |> put_flash(:info, "Przedział usunięty")
-    |> redirect(to: Routes.holiday_path(conn, :index))
+    holiday_row = Repo.get!(Holiday, row_id)
+    date = Date.utc_today()
+    start_date = Date.from_iso8601!(holiday_row.date_start)
+    case Date.compare(date, start_date) do
+      :eq -> conn
+      |> put_flash(:error, "Nie można usunąć przedziału, ponieważ urlop już się rozpoczął lub skończył.")
+      |> redirect(to: Routes.holiday_path(conn, :index))
+      :lt ->  Repo.delete!(holiday_row)
+      conn
+      |> put_flash(:info, "Przedział usunięty")
+      |> redirect(to: Routes.holiday_path(conn, :index))
+      :gt -> conn
+      |> put_flash(:info, "Nie można usunąć przedziału, ponieważ urlop już się rozpoczął lub skończył.")
+      |> redirect(to: Routes.holiday_path(conn, :index))
+    end
+
   end
 
   def edit(conn, %{"id" => row_id}) do
     holiday_row = Repo.get(Holiday, row_id)
     changeset = Holiday.changeset(holiday_row)
-    render conn, "edit.html", changeset: changeset, holiday_row: holiday_row
+    date = Date.utc_today()
+    start_date = Date.from_iso8601!(holiday_row.date_start)
+    case Date.compare(date, start_date) do
+      :eq -> conn
+      |> put_flash(:error, "Nie można edytować przedziału, ponieważ urlop już się rozpoczął lub skończył.")
+      |> redirect(to: Routes.holiday_path(conn, :index))
+      :lt -> render conn, "edit.html", changeset: changeset, holiday_row: holiday_row
+      :gt -> conn
+      |> put_flash(:info, "Nie można edytować przedziału, ponieważ urlop już się rozpoczął lub skończył.")
+      |> redirect(to: Routes.holiday_path(conn, :index))
+    end
+    #render conn, "edit.html", changeset: changeset, holiday_row: holiday_row
   end
 
   def update(conn, %{"id" => row_id, "holiday" => new_row}) do
